@@ -25,3 +25,16 @@ class TechLogin(models.Model):
     tech_uravl = models.BooleanField(default=False)
     tech_uname = models.CharField(max_length=30)
     tech_psw = models.CharField(max_length=30)
+    
+    
+    
+class Requests(models.Model):
+    req_id = models.AutoField(primary_key=True)
+    req_user = models.ForeignKey(UserLogin,on_delete=models.SET_NULL,null=True)
+    req_dept = models.ForeignKey(TechLogin,on_delete=models.SET_NULL,null=True)
+    req_brief = models.CharField(max_length=500)
+    req_wmnum = models.CharField(max_length=16)
+    req_loc = models.CharField(max_length=100)
+    req_time = models.TimeField(null=True,blank=True,default=None)
+    req_img = models.ImageField(upload_to='images/',null=True,blank=True,default=None)
+    
