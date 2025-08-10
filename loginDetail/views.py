@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK,HTTP_400_BAD_REQUEST,HTTP_201_CREATED
-from .serializer import UserSerializer,TechSerializer
-from .models import UserLogin,TechLogin
+from .serializer import UserSerializer,TechSerializer,RequestSerializer
+from .models import UserLogin,TechLogin,Requests
 # Create your views here.
 
 class LoginUser(APIView):
@@ -34,3 +34,21 @@ class LoginTech(APIView):
             return Response(status=HTTP_201_CREATED)
         else:
             return Response(seri_obj.errors,status=HTTP_400_BAD_REQUEST)
+        
+        
+        
+class RaiseRequests(APIView):
+    def get(self,req):
+        requests = Requests.objects.all()
+        ser_obj = RequestSerializer(requests,many=True)
+        return Response(ser_obj.data,status=HTTP_200_OK)
+    
+    def post(self,req):
+        ser_obj = RequestSerializer(data = req.data)
+        if ser_obj.is_valid():
+            ser_obj.save()
+            return Response(status=HTTP_201_CREATED)
+        else:
+            return Response(ser_obj.errors,status=HTTP_400_BAD_REQUEST)
+        
+        
