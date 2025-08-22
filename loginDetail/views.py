@@ -67,4 +67,8 @@ class GetDepartments(APIView):
             return Response(ser_obj.errors,status=HTTP_400_BAD_REQUEST)
         
         
-        
+      
+      
+class AcceptingRequest(APIView):
+    def get(self,req):
+        pass
