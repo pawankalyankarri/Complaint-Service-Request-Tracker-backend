@@ -45,4 +45,7 @@ class Requests(models.Model):
     req_img = models.ImageField(upload_to='images/',null=True,blank=True,default=None)
     
     
-    
+class AcceptedRequests(models.Model):
+    areq_id = models.AutoField(primary_key=True)
+    areq_number = models.ForeignKey(Requests,on_delete=models.SET_NULL,null=True)
+    areq_status = models.CharField(max_length=25,default=None)
