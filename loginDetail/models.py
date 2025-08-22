@@ -47,5 +47,5 @@ class Requests(models.Model):
     
 class AcceptedRequests(models.Model):
     areq_id = models.AutoField(primary_key=True)
-    areq_number = models.ForeignKey(Requests,on_delete=models.SET_NULL,null=True)
-    areq_status = models.CharField(max_length=25,default=None)
+    areq_unumber = models.ForeignKey(Requests,on_delete=models.SET_NULL,null=True)
+    areq_status = models.CharField(max_length=25,default=None,blank=True,null=True)

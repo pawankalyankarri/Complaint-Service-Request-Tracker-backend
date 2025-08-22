@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK,HTTP_400_BAD_REQUEST,HTTP_201_CREATED
-from .serializer import UserSerializer,TechSerializer,RequestSerializer,DepartmentsSerializer
-from .models import UserLogin,TechLogin,Requests,Departments
+from .serializer import UserSerializer,TechSerializer,RequestSerializer,DepartmentsSerializer,AccReqSerializer
+from .models import UserLogin,TechLogin,Requests,Departments,AcceptedRequests
 # Create your views here.
 
 class LoginUser(APIView):
@@ -46,8 +46,9 @@ class RaiseRequests(APIView):
     def post(self,req):
         ser_obj = RequestSerializer(data = req.data)
         if ser_obj.is_valid():
-            ser_obj.save()
-            return Response(status=HTTP_201_CREATED)
+            new_req = ser_obj.save()
+            created_obj = RequestSerializer(new_req).data
+            return Response(created_obj,status=HTTP_201_CREATED)
         else:
             return Response(ser_obj.errors,status=HTTP_400_BAD_REQUEST)
         
@@ -71,4 +72,14 @@ class GetDepartments(APIView):
       
 class AcceptingRequest(APIView):
     def get(self,req):
-        pass
+        acc_reqs = AcceptedRequests.objects.all()
+        ser_obj = AccReqSerializer(acc_reqs,many=True)
+        return Response(ser_obj.data,status=HTTP_200_OK)
+    
+    def post(self,req):
+        ser_obj = AccReqSerializer(data = req.data)
+        if ser_obj.is_valid():
+            ser_obj.save()
+            return Response(status=HTTP_201_CREATED)
+        else:
+            return Response(ser_obj.errors,status=HTTP_400_BAD_REQUEST)
