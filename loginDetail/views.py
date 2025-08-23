@@ -83,3 +83,21 @@ class AcceptingRequest(APIView):
             return Response(status=HTTP_201_CREATED)
         else:
             return Response(ser_obj.errors,status=HTTP_400_BAD_REQUEST)
+        
+        
+        
+class ModifyAcceptingRequest(APIView):
+    def put(self,req,pk):
+        req_obj = AcceptedRequests.objects.get(areq_id = pk)
+        ser_obj = AccReqSerializer(data = req_obj)
+        if ser_obj.is_valid():
+            ser_obj.save()
+            return Response(status=HTTP_200_OK)
+        else:
+            return Response(ser_obj.errors,status=HTTP_400_BAD_REQUEST)
+            
+    def get(self,req,pk):
+        req_obj = AcceptedRequests.objects.get(areq_id = pk)
+        ser_obj = AccReqSerializer(req_obj)
+        return Response(ser_obj.data,status=HTTP_200_OK)
+            
