@@ -87,9 +87,9 @@ class AcceptingRequest(APIView):
         
         
 class ModifyAcceptingRequest(APIView):
-    def put(self,req,pk):
+    def patch(self,req,pk):
         req_obj = AcceptedRequests.objects.get(areq_id = pk)
-        ser_obj = AccReqSerializer(data = req_obj)
+        ser_obj = AccReqSerializer(req_obj,data = req.data,)
         if ser_obj.is_valid():
             ser_obj.save()
             return Response(status=HTTP_200_OK)
